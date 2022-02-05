@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// An example of how to test the Terraform module in examples/terratest/ using Terratest.
+// Test the Terraform module in examples/terratest/ using Terratest
 func TestTerraformS3Backend(t *testing.T) {
 	t.Parallel()
 
@@ -42,9 +42,9 @@ func TestTerraformS3Backend(t *testing.T) {
 			"region": awsRegion,
 		},
 
-		// Environment variables to set when running Terraform
+		// How to set Environment variables when running Terraform
 		EnvVars: map[string]string{
-			"AWS_DEFAULT_PROFILE": "privileged-admin-ac-test",
+			"AWS_DEFAULT_PROFILE": "privileged-admin-test",
 		},
 	})
 
@@ -54,8 +54,6 @@ func TestTerraformS3Backend(t *testing.T) {
 	// Run `terraform output` to get the value of an output variable
 	outputS3Bucket := terraform.Output(t, terraformOptions, "s3_bucket")
 	outputDynamodbTable := terraform.Output(t, terraformOptions, "dynamodb_table")
-	// assert.Contains(t, expectedBucketName, s3Bucket)
-	// assert.Contains(t, expectedDynamodbName, dynamodbTable)
 	require.Equal(t, bucketName, outputS3Bucket)
 	require.Equal(t, dynamodbName, outputDynamodbTable)
 
