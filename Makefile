@@ -25,7 +25,7 @@ apply: current.plan
 	terraform apply -auto-approve current.plan
 
 test:
-	@terraform fmt -diff=true -write=false
+	cd test && go test -v -run TestTerraformS3Backend -timeout 30m
 
 destroy_plan:
 	terraform plan -destroy -out destroy.plan
