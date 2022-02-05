@@ -5,7 +5,7 @@ locals {
 }
 
 resource "aws_iam_role" "iam_role" {
-  name = "${local.namespace}-tf-assume-role"
+  name = "${var.namespace}-tf-assume-role"
 
   assume_role_policy = <<-EOF
     {
@@ -23,7 +23,7 @@ resource "aws_iam_role" "iam_role" {
   EOF
 
   tags = {
-    ResourceGroup = local.namespace
+    ResourceGroup = var.namespace
   }
 }
 
@@ -60,12 +60,12 @@ data "aws_iam_policy_document" "policy_doc" {
       "kms:Decrypt",
       "kms:GenerateDataKey"
     ]
-    resources = [aws_kms_key.kms_key.arn]
+    resources = [data.aws_kms_alias.s3.arn]
   }
 }
 
 resource "aws_iam_policy" "iam_policy" {
-  name   = "${local.namespace}-tf-policy"
+  name   = "${var.namespace}-tf-policy"
   path   = "/"
   policy = data.aws_iam_policy_document.policy_doc.json
 }

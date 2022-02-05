@@ -1,7 +1,7 @@
 data "aws_region" "current" {}
 
 resource "aws_resourcegroups_group" "resourcegroups_group" {
-  name = "group-${local.namespace}"
+  name = "group-${var.namespace}"
 
   resource_query {
     query = <<-JSON
@@ -12,7 +12,7 @@ resource "aws_resourcegroups_group" "resourcegroups_group" {
   "TagFilters": [
     {
       "Key": "ResourceGroup",
-      "Values": ["${local.namespace}"]
+      "Values": ["${var.namespace}"]
     }
   ]
 }
@@ -25,7 +25,7 @@ data "aws_kms_alias" "s3" {
 }
 
 resource "aws_s3_bucket" "s3_bucket" {
-  bucket        = "state-bucket-${local.namespace}"
+  bucket        = "state-bucket-${var.namespace}"
   force_destroy = var.force_destroy_state
 
   versioning {
@@ -42,7 +42,7 @@ resource "aws_s3_bucket" "s3_bucket" {
   }
 
   tags = {
-    ResourceGroup = local.namespace
+    ResourceGroup = var.namespace
   }
 }
 
@@ -56,7 +56,7 @@ resource "aws_s3_bucket_public_access_block" "s3_bucket" {
 }
 
 resource "aws_dynamodb_table" "dynamodb_table" {
-  name         = "state-lock-${local.namespace}"
+  name         = "state-lock-${var.namespace}"
   hash_key     = "LockID"
   billing_mode = "PAY_PER_REQUEST"
   attribute {
@@ -64,6 +64,6 @@ resource "aws_dynamodb_table" "dynamodb_table" {
     type = "S"
   }
   tags = {
-    ResourceGroup = local.namespace
+    ResourceGroup = var.namespace
   }
 }

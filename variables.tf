@@ -15,15 +15,3 @@ variable "force_destroy_state" {
   default     = true
   type        = bool
 }
-
-variable "kms_enable_key_rotation" {
-  type        = string
-  default     = true
-  description = "Specifies whether KMS key rotation is enabled."
-}
-
-variable "kms_deletion_window_in_days" {
-  type        = number
-  default     = 10
-  description = "Duration in days after which the KMS key is deleted after destruction of the resource."
-}
