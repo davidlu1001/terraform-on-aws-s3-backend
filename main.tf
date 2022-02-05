@@ -41,9 +41,10 @@ resource "aws_s3_bucket" "s3_bucket" {
     }
   }
 
-  tags = {
-    ResourceGroup = var.namespace
-  }
+  tags = merge(
+    { ResourceGroup = var.namespace },
+    var.tags,
+  )
 }
 
 resource "aws_s3_bucket_public_access_block" "s3_bucket" {
@@ -63,7 +64,9 @@ resource "aws_dynamodb_table" "dynamodb_table" {
     name = "LockID"
     type = "S"
   }
-  tags = {
-    ResourceGroup = var.namespace
-  }
+
+  tags = merge(
+    { ResourceGroup = var.namespace },
+    var.tags,
+  )
 }
