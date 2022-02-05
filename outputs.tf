@@ -1,9 +1,14 @@
-output "config" {
-  description = "Outputs the configuration for S3 backend"
-  value = {
-    bucket         = aws_s3_bucket.s3_bucket.bucket
-    region         = data.aws_region.current.name
-    role_arn       = aws_iam_role.iam_role.arn
-    dynamodb_table = aws_dynamodb_table.dynamodb_table.name
-  }
+output "s3_bucket" {
+  description = "S3 bucket for state"
+  value       = aws_s3_bucket.s3_bucket.bucket
+}
+
+output "dynamodb_table" {
+  description = "Dynamodb table for locking"
+  value       = aws_dynamodb_table.dynamodb_table.name
+}
+
+output "state_role_arn" {
+  description = "State role arn"
+  value       = aws_iam_role.iam_role.arn
 }

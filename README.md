@@ -46,5 +46,7 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_config"></a> [config](#output\_config) | Outputs the configuration for S3 backend |
+| <a name="output_dynamodb_table"></a> [dynamodb\_table](#output\_dynamodb\_table) | Dynamodb table for locking |
+| <a name="output_s3_bucket"></a> [s3\_bucket](#output\_s3\_bucket) | S3 bucket for state |
+| <a name="output_state_role_arn"></a> [state\_role\_arn](#output\_state\_role\_arn) | State role arn |
 <!-- END_TF_DOCS -->
