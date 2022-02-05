@@ -1,17 +1,7 @@
 data "aws_region" "current" {}
 
-resource "random_string" "rand" {
-  length  = 14
-  special = false
-  upper   = false
-}
-
-locals {
-  namespace = substr(join("-", [var.namespace, random_string.rand.result]), 0, 14)
-}
-
 resource "aws_resourcegroups_group" "resourcegroups_group" {
-  name = "${local.namespace}-group"
+  name = "group-${local.namespace}"
 
   resource_query {
     query = <<-JSON
@@ -30,13 +20,8 @@ resource "aws_resourcegroups_group" "resourcegroups_group" {
   }
 }
 
-resource "aws_kms_key" "kms_key" {
-  enable_key_rotation     = var.kms_enable_key_rotation
-  deletion_window_in_days = var.kms_deletion_window_in_days
-
-  tags = {
-    ResourceGroup = local.namespace
-  }
+data "aws_kms_alias" "s3" {
+  name = "alias/aws/s3"
 }
 
 resource "aws_s3_bucket" "s3_bucket" {
@@ -51,7 +36,7 @@ resource "aws_s3_bucket" "s3_bucket" {
     rule {
       apply_server_side_encryption_by_default {
         sse_algorithm     = "aws:kms"
-        kms_master_key_id = aws_kms_key.kms_key.arn
+        kms_master_key_id = data.aws_kms_alias.s3.arn
       }
     }
   }
