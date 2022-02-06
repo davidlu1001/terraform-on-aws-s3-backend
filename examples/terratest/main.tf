@@ -7,6 +7,8 @@ terraform {
       version = ">= 3.69"
     }
   }
+
+  backend "local" {}
 }
 
 provider "aws" {

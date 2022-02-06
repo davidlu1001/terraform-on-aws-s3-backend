@@ -5,7 +5,6 @@ import (
 	"testing"
 
 	"github.com/gruntwork-io/terratest/modules/aws"
-	"github.com/gruntwork-io/terratest/modules/random"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/require"
 )
@@ -13,8 +12,6 @@ import (
 // Test the Terraform module in examples/terratest/ using Terratest
 func TestTerraformS3Backend(t *testing.T) {
 	t.Parallel()
-
-	uniqueId := random.UniqueId()
 
 	awsRegion := "ap-southeast-2"
 	nameSpace := "default"
@@ -24,8 +21,6 @@ func TestTerraformS3Backend(t *testing.T) {
 	bucketName := fmt.Sprintf("state-bucket-%s", nameSpace)
 	dynamodbName := fmt.Sprintf("state-lock-%s", nameSpace)
 
-	key := fmt.Sprintf("%s/terraform.tfstate", uniqueId)
-
 	// Deploy the module, configuring it to use the S3 bucket as an S3 backend
 	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: "../examples/terratest/",
@@ -34,12 +29,6 @@ func TestTerraformS3Backend(t *testing.T) {
 			"region":              awsRegion,
 			"namespace":           nameSpace,
 			"force_destroy_state": forceDestroyState,
-		},
-
-		BackendConfig: map[string]interface{}{
-			"bucket": bucketName,
-			"key":    key,
-			"region": awsRegion,
 		},
 
 		// How to set Environment variables when running Terraform
