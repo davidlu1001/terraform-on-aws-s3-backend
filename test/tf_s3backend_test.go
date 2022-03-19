@@ -30,11 +30,6 @@ func TestTerraformS3Backend(t *testing.T) {
 			"namespace":           nameSpace,
 			"force_destroy_state": forceDestroyState,
 		},
-
-		// How to set Environment variables when running Terraform
-		EnvVars: map[string]string{
-			"AWS_DEFAULT_PROFILE": "privileged-admin-test",
-		},
 	})
 
 	defer terraform.Destroy(t, terraformOptions)
